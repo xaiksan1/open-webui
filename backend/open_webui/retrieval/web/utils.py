@@ -11,36 +11,35 @@ from typing import (
     Dict,
     Iterator,
     List,
+    Literal,
     Optional,
     Sequence,
     Union,
-    Literal,
 )
 
-from fastapi.concurrency import run_in_threadpool
 import aiohttp
 import certifi
 import validators
+from fastapi.concurrency import run_in_threadpool
 from langchain_community.document_loaders import PlaywrightURLLoader, WebBaseLoader
 from langchain_community.document_loaders.base import BaseLoader
 from langchain_core.documents import Document
-from open_webui.retrieval.loaders.tavily import TavilyLoader
-from open_webui.retrieval.loaders.external_web import ExternalWebLoader
-from open_webui.constants import ERROR_MESSAGES
 from open_webui.config import (
     ENABLE_RAG_LOCAL_WEB_FETCH,
-    PLAYWRIGHT_WS_URL,
-    PLAYWRIGHT_TIMEOUT,
-    WEB_LOADER_ENGINE,
+    EXTERNAL_WEB_LOADER_API_KEY,
+    EXTERNAL_WEB_LOADER_URL,
     FIRECRAWL_API_BASE_URL,
     FIRECRAWL_API_KEY,
+    PLAYWRIGHT_TIMEOUT,
+    PLAYWRIGHT_WS_URL,
     TAVILY_API_KEY,
     TAVILY_EXTRACT_DEPTH,
-    EXTERNAL_WEB_LOADER_URL,
-    EXTERNAL_WEB_LOADER_API_KEY,
+    WEB_LOADER_ENGINE,
 )
+from open_webui.constants import ERROR_MESSAGES
 from open_webui.env import SRC_LOG_LEVELS
-
+from open_webui.retrieval.loaders.external_web import ExternalWebLoader
+from open_webui.retrieval.loaders.tavily import TavilyLoader
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])

@@ -1,7 +1,6 @@
-from open_webui.routers.images import (
-    get_image_data,
-    upload_image,
-)
+import base64
+import io
+import mimetypes
 
 from fastapi import (
     APIRouter,
@@ -10,12 +9,11 @@ from fastapi import (
     Request,
     UploadFile,
 )
-
 from open_webui.routers.files import upload_file_handler
-
-import mimetypes
-import base64
-import io
+from open_webui.routers.images import (
+    get_image_data,
+    upload_image,
+)
 
 
 def get_image_url_from_base64(request, base64_image_string, metadata, user):

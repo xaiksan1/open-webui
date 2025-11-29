@@ -1,48 +1,39 @@
+import hashlib
 import logging
 import os
+import re
+import time
+from concurrent.futures import ThreadPoolExecutor
 from typing import Optional, Union
+from urllib.parse import quote
 
 import requests
-import hashlib
-from concurrent.futures import ThreadPoolExecutor
-import time
-import re
-
-from urllib.parse import quote
 from huggingface_hub import snapshot_download
 from langchain.retrievers import ContextualCompressionRetriever, EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 from langchain_core.documents import Document
-
-from open_webui.config import VECTOR_DB
-from open_webui.retrieval.vector.factory import VECTOR_DB_CLIENT
-
-
-from open_webui.models.users import UserModel
-from open_webui.models.files import Files
-from open_webui.models.knowledge import Knowledges
-
-from open_webui.models.chats import Chats
-from open_webui.models.notes import Notes
-
-from open_webui.retrieval.vector.main import GetResult
-from open_webui.utils.access_control import has_access
-from open_webui.utils.misc import get_message_list
-
-from open_webui.retrieval.web.utils import get_web_loader
-from open_webui.retrieval.loaders.youtube import YoutubeLoader
-
-
-from open_webui.env import (
-    SRC_LOG_LEVELS,
-    OFFLINE_MODE,
-    ENABLE_FORWARD_USER_INFO_HEADERS,
-)
 from open_webui.config import (
-    RAG_EMBEDDING_QUERY_PREFIX,
     RAG_EMBEDDING_CONTENT_PREFIX,
     RAG_EMBEDDING_PREFIX_FIELD_NAME,
+    RAG_EMBEDDING_QUERY_PREFIX,
+    VECTOR_DB,
 )
+from open_webui.env import (
+    ENABLE_FORWARD_USER_INFO_HEADERS,
+    OFFLINE_MODE,
+    SRC_LOG_LEVELS,
+)
+from open_webui.models.chats import Chats
+from open_webui.models.files import Files
+from open_webui.models.knowledge import Knowledges
+from open_webui.models.notes import Notes
+from open_webui.models.users import UserModel
+from open_webui.retrieval.loaders.youtube import YoutubeLoader
+from open_webui.retrieval.vector.factory import VECTOR_DB_CLIENT
+from open_webui.retrieval.vector.main import GetResult
+from open_webui.retrieval.web.utils import get_web_loader
+from open_webui.utils.access_control import has_access
+from open_webui.utils.misc import get_message_list
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])

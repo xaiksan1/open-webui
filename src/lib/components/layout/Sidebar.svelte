@@ -25,7 +25,8 @@
 		isApp,
 		models,
 		selectedFolder,
-		WEBUI_NAME
+		WEBUI_NAME,
+		searchText
 	} from '$lib/stores';
 	import { onMount, getContext, tick, onDestroy } from 'svelte';
 
@@ -67,6 +68,10 @@
 	const BREAKPOINT = 768;
 
 	let scrollTop = 0;
+	let _searchText = '';
+	$: {
+		$searchText = _searchText;
+	}
 
 	let navElement;
 	let shiftKey = false;
@@ -522,6 +527,10 @@
 
 <SearchModal
 	bind:show={$showSearch}
+	bind:searchText={_searchText}
+	on:change={(e) => {
+		_searchText = e.detail.searchText;
+	}}
 	onClose={() => {
 		if ($mobile) {
 			showSidebar.set(false);

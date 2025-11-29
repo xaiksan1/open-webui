@@ -2,9 +2,9 @@ import logging
 from typing import Optional
 
 import requests
-from requests.auth import HTTPDigestAuth
-from open_webui.retrieval.web.main import SearchResult, get_filtered_results
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.web.main import SearchResult, get_filtered_results
+from requests.auth import HTTPDigestAuth
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["RAG"])

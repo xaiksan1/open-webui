@@ -1,6 +1,7 @@
-from typing import Optional, List, Dict, Any, Union
 import logging
 import time  # for measuring elapsed time
+from typing import Any, Dict, List, Optional, Union
+
 from pinecone import Pinecone, ServerlessSpec
 
 # Add gRPC support for better performance (Pinecone best practice)
@@ -12,28 +13,26 @@ except ImportError:
     GRPC_AVAILABLE = False
 
 import asyncio  # for async upserts
-import functools  # for partial binding in async tasks
-
 import concurrent.futures  # for parallel batch upserts
+import functools  # for partial binding in async tasks
 import random  # for jitter in retry backoff
 
-from open_webui.retrieval.vector.main import (
-    VectorDBBase,
-    VectorItem,
-    SearchResult,
-    GetResult,
-)
 from open_webui.config import (
     PINECONE_API_KEY,
+    PINECONE_CLOUD,
+    PINECONE_DIMENSION,
     PINECONE_ENVIRONMENT,
     PINECONE_INDEX_NAME,
-    PINECONE_DIMENSION,
     PINECONE_METRIC,
-    PINECONE_CLOUD,
 )
 from open_webui.env import SRC_LOG_LEVELS
+from open_webui.retrieval.vector.main import (
+    GetResult,
+    SearchResult,
+    VectorDBBase,
+    VectorItem,
+)
 from open_webui.retrieval.vector.utils import process_metadata
-
 
 NO_LIMIT = 10000  # Reasonable limit to avoid overwhelming the system
 BATCH_SIZE = 100  # Recommended batch size for Pinecone operations

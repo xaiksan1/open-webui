@@ -1,17 +1,28 @@
-import logging
 import json
+import logging
 import time
 import uuid
 from typing import Optional
 
-from open_webui.internal.db import Base, get_db
-from open_webui.models.tags import TagModel, Tag, Tags
-from open_webui.models.folders import Folders
 from open_webui.env import SRC_LOG_LEVELS
-
+from open_webui.internal.db import Base, get_db
+from open_webui.models.folders import Folders
+from open_webui.models.tags import Tag, TagModel, Tags
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Boolean, Column, String, Text, JSON, Index
-from sqlalchemy import or_, func, select, and_, text
+from sqlalchemy import (
+    JSON,
+    BigInteger,
+    Boolean,
+    Column,
+    Index,
+    String,
+    Text,
+    and_,
+    func,
+    or_,
+    select,
+    text,
+)
 from sqlalchemy.sql import exists
 from sqlalchemy.sql.expression import bindparam
 

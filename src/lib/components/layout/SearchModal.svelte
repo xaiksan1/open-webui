@@ -19,7 +19,11 @@
 	import PageEdit from '../icons/PageEdit.svelte';
 	dayjs.extend(calendar);
 
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 	export let show = false;
+	export let searchText = '';
 	export let onClose = () => {};
 
 	let actions = [
@@ -35,6 +39,10 @@
 	];
 
 	let query = '';
+	$: {
+		searchText = query;
+		dispatch('change', { searchText });
+	}
 	let page = 1;
 
 	let chatList = null;

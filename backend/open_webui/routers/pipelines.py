@@ -1,4 +1,12 @@
+import logging
+import os
+import shutil
+from typing import Optional
+
+import aiohttp
+import requests
 from fastapi import (
+    APIRouter,
     Depends,
     FastAPI,
     File,
@@ -7,25 +15,14 @@ from fastapi import (
     Request,
     UploadFile,
     status,
-    APIRouter,
 )
-import aiohttp
-import os
-import logging
-import shutil
-import requests
-from pydantic import BaseModel
-from starlette.responses import FileResponse
-from typing import Optional
-
-from open_webui.env import SRC_LOG_LEVELS, AIOHTTP_CLIENT_SESSION_SSL
 from open_webui.config import CACHE_DIR
 from open_webui.constants import ERROR_MESSAGES
-
-
+from open_webui.env import AIOHTTP_CLIENT_SESSION_SSL, SRC_LOG_LEVELS
 from open_webui.routers.openai import get_all_models_responses
-
 from open_webui.utils.auth import get_admin_user
+from pydantic import BaseModel
+from starlette.responses import FileResponse
 
 log = logging.getLogger(__name__)
 log.setLevel(SRC_LOG_LEVELS["MAIN"])

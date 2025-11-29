@@ -38,10 +38,12 @@
 		temporaryChatEnabled,
 		toolServers,
 		showSearch,
-		showSidebar
+		showSidebar,
+		searchText
 	} from '$lib/stores';
 
 	import Sidebar from '$lib/components/layout/Sidebar.svelte';
+	import SearchResults from '$lib/components/search/SearchResults.svelte';
 	import SettingsModal from '$lib/components/chat/SettingsModal.svelte';
 	import ChangelogModal from '$lib/components/ChangelogModal.svelte';
 	import AccountPending from '$lib/components/layout/Overlay/AccountPending.svelte';
@@ -380,12 +382,15 @@
 					</div>
 				{/if}
 
-				<Sidebar />
-
-				{#if loaded}
-					<slot />
-				{:else}
-					<div
+						<Sidebar />
+				
+						{#if loaded}
+							{#if $searchText}
+								<SearchResults bind:searchText={$searchText} />
+							{:else}
+								<slot />
+							{/if}
+						{:else}					<div
 						class="w-full flex-1 h-full flex items-center justify-center {$showSidebar
 							? '  md:max-w-[calc(100%-260px)]'
 							: ' '}"

@@ -3,12 +3,15 @@ import traceback
 from typing import Collection, Union
 
 from aiohttp import (
-    TraceRequestStartParams,
     TraceRequestEndParams,
     TraceRequestExceptionParams,
+    TraceRequestStartParams,
 )
 from chromadb.telemetry.opentelemetry.fastapi import instrument_fastapi
-from fastapi import FastAPI
+from fastapi import FastAPI, status
+from open_webui.env import SRC_LOG_LEVELS
+from open_webui.utils.telemetry.constants import SPAN_REDIS_TYPE, SpanAttributes
+from opentelemetry.instrumentation.aiohttp_client import AioHttpClientInstrumentor
 from opentelemetry.instrumentation.httpx import (
     HTTPXClientInstrumentor,
     RequestInfo,
@@ -19,16 +22,10 @@ from opentelemetry.instrumentation.logging import LoggingInstrumentor
 from opentelemetry.instrumentation.redis import RedisInstrumentor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
 from opentelemetry.instrumentation.sqlalchemy import SQLAlchemyInstrumentor
-from opentelemetry.instrumentation.aiohttp_client import AioHttpClientInstrumentor
 from opentelemetry.trace import Span, StatusCode
 from redis import Redis
 from requests import PreparedRequest, Response
 from sqlalchemy import Engine
-from fastapi import status
-
-from open_webui.utils.telemetry.constants import SPAN_REDIS_TYPE, SpanAttributes
-
-from open_webui.env import SRC_LOG_LEVELS
 
 logger = logging.getLogger(__name__)
 logger.setLevel(SRC_LOG_LEVELS["MAIN"])

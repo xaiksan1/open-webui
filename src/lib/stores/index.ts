@@ -19,6 +19,7 @@ export const appData = writable(null);
 
 // Frontend
 export const MODEL_DOWNLOAD_POOL = writable({});
+export const searchText = writable('');
 
 export const mobile = writable(false);
 

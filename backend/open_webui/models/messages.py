@@ -4,13 +4,22 @@ import uuid
 from typing import Optional
 
 from open_webui.internal.db import Base, get_db
-from open_webui.models.tags import TagModel, Tag, Tags
-from open_webui.models.users import Users, UserNameResponse
-
-
+from open_webui.models.tags import Tag, TagModel, Tags
+from open_webui.models.users import UserNameResponse, Users
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import BigInteger, Boolean, Column, String, Text, JSON
-from sqlalchemy import or_, func, select, and_, text
+from sqlalchemy import (
+    JSON,
+    BigInteger,
+    Boolean,
+    Column,
+    String,
+    Text,
+    and_,
+    func,
+    or_,
+    select,
+    text,
+)
 from sqlalchemy.sql import exists
 
 ####################

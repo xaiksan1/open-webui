@@ -1,24 +1,22 @@
+import base64
 import hashlib
+import html
 import json
 import logging
+import mimetypes
 import os
 import uuid
-import html
-import base64
-from functools import lru_cache
-from pydub import AudioSegment
-from pydub.silence import split_on_silence
 from concurrent.futures import ThreadPoolExecutor
-from typing import Optional
-
 from fnmatch import fnmatch
-import aiohttp
-import aiofiles
-import requests
-import mimetypes
-from urllib.parse import urljoin, quote
+from functools import lru_cache
+from typing import Optional
+from urllib.parse import quote, urljoin
 
+import aiofiles
+import aiohttp
+import requests
 from fastapi import (
+    APIRouter,
     Depends,
     FastAPI,
     File,
@@ -27,32 +25,29 @@ from fastapi import (
     Request,
     UploadFile,
     status,
-    APIRouter,
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
-
-
-from open_webui.utils.auth import get_admin_user, get_verified_user
 from open_webui.config import (
+    CACHE_DIR,
+    ELEVENLABS_API_BASE_URL,
+    WHISPER_LANGUAGE,
     WHISPER_MODEL_AUTO_UPDATE,
     WHISPER_MODEL_DIR,
-    CACHE_DIR,
-    WHISPER_LANGUAGE,
-    ELEVENLABS_API_BASE_URL,
 )
-
 from open_webui.constants import ERROR_MESSAGES
 from open_webui.env import (
-    ENV,
     AIOHTTP_CLIENT_SESSION_SSL,
     AIOHTTP_CLIENT_TIMEOUT,
-    SRC_LOG_LEVELS,
     DEVICE_TYPE,
     ENABLE_FORWARD_USER_INFO_HEADERS,
+    ENV,
+    SRC_LOG_LEVELS,
 )
-
+from open_webui.utils.auth import get_admin_user, get_verified_user
+from pydantic import BaseModel
+from pydub import AudioSegment
+from pydub.silence import split_on_silence
 
 router = APIRouter()
 
@@ -313,8 +308,8 @@ async def update_audio_config(
 
 
 def load_speech_pipeline(request):
-    from transformers import pipeline
     from datasets import load_dataset
+    from transformers import pipeline
 
     if request.app.state.speech_synthesiser is None:
         request.app.state.speech_synthesiser = pipeline(
@@ -538,8 +533,8 @@ async def speech(request: Request, user=Depends(get_verified_user)):
             log.exception(e)
             raise HTTPException(status_code=400, detail="Invalid JSON payload")
 
-        import torch
         import soundfile as sf
+        import torch
 
         load_speech_pipeline(request)
 
